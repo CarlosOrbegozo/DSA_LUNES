@@ -6,30 +6,56 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script>
+
   $(document).ready(function(){
       $("button").click(function(){
-        username = "SergiVera";
+        $("h2").hide();
+        $("input").hide();
+        $("label").hide();
+        $("button").hide();
+        var username = $("input").val();
+        $("input").val(username);
+        console.log(username);
+
         $.ajax({
           type:'GET',url:"https://api.github.com/users/"+username+"/repos",
           success: function(dataNameDescription){
           console.log('success',dataNameDescription);
           for(var i = 0;i<dataNameDescription.length;i++){
+            name = dataNameDescription[i].name;
+            if(dataNameDescription[i].description == null){
+              description = "No Description";
+            }
+            else{
+              description = dataNameDescription[i].description;
+            }
             console.log(dataNameDescription[i].name);
             console.log(dataNameDescription[i].description);
+            var v = "<tr><td>"+name+"</td><td>"+description+"</td></tr>";
+            $("tbody").append(v);
           }
+
         }
 
         });
+        console.log(name)
         $.ajax({
           type:'GET',url:"https://api.github.com/users/"+username+"/followers",
           success: function(dataFollowers){
             console.log('success',dataFollowers);
+            var count = 0;
             for(var i = 0;i<dataFollowers.length;i++){
+              login = dataFollowers[i].login;
               console.log(dataFollowers[i].login);
+              count++;
             }
+            var v ="<tr><th>Repository</th><th>Description</th><th>Followers</th><th>"+count+"</th></tr>";
+            $("h1").append(username+" Information");
+            $("thead").append(v);
           }
 
         });
+
       });
   });
   </script>
@@ -43,8 +69,20 @@
 <title>Get Github User</title>
 <body>
   <h2>Introduce Github User to see his details</h2>
-  <label for="user">Github User:</label>
+  <label >Github User:</label>
   <input type="text" id="user" placeholder="Enter user">
   <button id="button">Submit</button>
+
+  <div class="container">
+    <h1></h1>
+    <table class="table table-bordered">
+      <thead>
+      </thead>
+
+      <tbody>
+      </tbody>
+
+    </table>
+  </div>
 
 </html>
