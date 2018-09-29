@@ -11,8 +11,22 @@
         username = "SergiVera";
         $.ajax({
           type:'GET',url:"https://api.github.com/users/"+username+"/repos",
-          success: function(data){
-          console.log('success',data);
+          success: function(dataNameDescription){
+          console.log('success',dataNameDescription);
+          for(var i = 0;i<dataNameDescription.length;i++){
+            console.log(dataNameDescription[i].name);
+            console.log(dataNameDescription[i].description);
+          }
+        }
+
+        });
+        $.ajax({
+          type:'GET',url:"https://api.github.com/users/"+username+"/followers",
+          success: function(dataFollowers){
+            console.log('success',dataFollowers);
+            for(var i = 0;i<dataFollowers.length;i++){
+              console.log(dataFollowers[i].login);
+            }
           }
 
         });
@@ -31,6 +45,6 @@
   <h2>Introduce Github User to see his details</h2>
   <label for="user">Github User:</label>
   <input type="text" id="user" placeholder="Enter user">
-  <button id="button" >Submit</button>
+  <button id="button">Submit</button>
 
 </html>
